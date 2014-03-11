@@ -1,5 +1,6 @@
-require "lib/strict"
+require "ext/lib/strict"
 require "lib/hsl"
+require "lib/hexgrid"
 
 require "code/globals"
 
@@ -17,7 +18,11 @@ local translationX, translationY, scale
 ---------------------------------------------------------------------------------------------------
 
 
-function love.load()
+function love.load(arg)
+    if arg[#arg] == "-debug" then require("mobdebug").start() end    
+    
+    garden:initialize()
+    
     love.graphics.setBackgroundColor(222, 222, 222)
     
     love.resize(love.window.getWidth(), love.window.getHeight())
@@ -49,6 +54,19 @@ function love.keypressed(key)
         love.event.push("quit")
     end
     state:keypressed(key)
+end
+
+
+---------------------------------------------------------------------------------------------------
+
+
+function love.update(dt)
+    local x, y = love.mouse.getPosition()
+    x = x - translationX
+    y = y - translationY
+    x = x / scale
+    y = y / scale
+    state:update(dt, x, y)
 end
 
 
