@@ -1,4 +1,5 @@
 require "lib/strict"
+require "lib/hsl"
 
 require "code/globals"
 
@@ -32,7 +33,7 @@ end
 function love.resize(width, height)
     translationX = width / 2
     translationY = height / 2
-    viewHeight = 6.0
+    viewHeight = (gridSize - 0.25) * (math.sqrt(3.0) * 0.5)
     scale = height / (2.0*viewHeight)
     viewWidth = (width / scale) / 2.0
 end
