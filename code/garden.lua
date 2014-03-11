@@ -77,6 +77,7 @@ end
 
 function garden:update(dt, x, y)
     self.highlightedCell = {self.grid:pixelToCell(x, y)}
+    self.highlightedCorner = {self.grid:pixelToCorner(x, y)}
 end
 
 
@@ -94,6 +95,18 @@ function garden:drawCell(q, r)
 end
 
 
+function garden:drawCorner(q, r, c)
+    local x, y = self.grid:cornerToPixel(q, r, c)
+--    if q == self.highlightedCell[1] and r == self.highlightedCell[2] then
+--        love.graphics.setColor(HSL(120.0, 0.35, 0.60))
+--    else
+--        love.graphics.setColor(HSL(120.0, 0.35, 0.40))
+--    end
+    love.graphics.setColor(HSL(120.0, 0.35, 0.20))
+    love.graphics.circle("fill", x, y, cellSide * 0.2, 32)
+end
+
+
 function garden:draw()
     love.graphics.draw(mesh, 0.0, 0.0)
     
@@ -108,6 +121,8 @@ function garden:draw()
             self:drawCell(-radius + i, -i)
         end
     end
+    
+    self:drawCorner(unpack(self.highlightedCorner))
 end
 
 
