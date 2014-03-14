@@ -5,6 +5,7 @@ inGame = {}
 
 
 function inGame:enter()
+    walkers[1] = Walker:new()
 end
 
 
@@ -25,8 +26,17 @@ end
 ---------------------------------------------------------------------------------------------------
 
 
+function inGame:mousepressed(x, y, button)
+    walkers[1]:mousepressed(x, y, button)
+end
+
+
+---------------------------------------------------------------------------------------------------
+
+
 function inGame:update(dt, x, y)
     garden:update(dt, x, y)
+    walkers[1]:update(dt, x, y)
 end
 
 
@@ -35,6 +45,7 @@ end
 
 function inGame:draw()
     garden:draw()
+    walkers[1]:draw()
 end
 
 

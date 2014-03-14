@@ -16,17 +16,17 @@ local sqrt3 = math.sqrt(3.0)
 
 PointyHexGrid.new = instantiate
 
-function PointyHexGrid:reset(side)
-    self.side = side
-    self.width = sqrt3 * side
-    self.height = 2.0 * side
+function PointyHexGrid:reset(radius)
+    self.radius = radius
+    self.width = sqrt3 * radius
+    self.height = 2.0 * radius
 end
 
 
 FlatHexGrid.new = instantiate
 
-function FlatHexGrid:reset(side)
-    self.side = side
+function FlatHexGrid:reset(radius)
+    self.radius = radius
 end
 
 
@@ -84,8 +84,8 @@ end
 
 
 function PointyHexGrid:cellToPixel(q, r)
-    return self.side * sqrt3 * (q + r / 2.0),
-           self.side * 3.0/2.0 * r
+    return self.radius * sqrt3 * (q + r / 2.0),
+           self.radius * 3.0/2.0 * r
 end
 
 
@@ -93,8 +93,8 @@ end
 
 
 function PointyHexGrid:pixelToCell(x, y)
-    local q = (1.0/3.0*sqrt3 * x - 1.0/3.0 * y) / self.side
-    local r = 2.0/3.0 * y / self.side
+    local q = (1.0/3.0*sqrt3 * x - 1.0/3.0 * y) / self.radius
+    local r = 2.0/3.0 * y / self.radius
     --return math.floor(q+0.5), math.floor(r+0.5)
     return self:round(q, r)
 end
@@ -105,12 +105,12 @@ end
 
 function PointyHexGrid:cornerToPixel(q, r, c)
     local x, y = self:cellToPixel(q, r)
-    if     c == 1 then return  x+0.0           , y-self.side
-    elseif c == 2 then return  x+self.width/2.0, y-self.side/2.0
-    elseif c == 3 then return  x+self.width/2.0, y+self.side/2.0
-    elseif c == 4 then return  x+0.0           , y+self.side
-    elseif c == 5 then return  x-self.width/2.0, y+self.side/2.0
-    elseif c == 6 then return  x-self.width/2.0, y-self.side/2.0
+    if     c == 1 then return  x+0.0           , y-self.radius
+    elseif c == 2 then return  x+self.width/2.0, y-self.radius/2.0
+    elseif c == 3 then return  x+self.width/2.0, y+self.radius/2.0
+    elseif c == 4 then return  x+0.0           , y+self.radius
+    elseif c == 5 then return  x-self.width/2.0, y+self.radius/2.0
+    elseif c == 6 then return  x-self.width/2.0, y-self.radius/2.0
     end
 end
 
@@ -125,6 +125,14 @@ function PointyHexGrid:pixelToCorner(x, y)
     local angle = math.atan2(dy, dx)
     local corner = math.floor(2.0 + angle/(math.pi/3.0)) % 6 + 1
     return q, r, corner
+end
+
+
+---------------------------------------------------------------------------------------------------
+
+
+function PointyHexGrid:distance(q1, r1, q2, r2)
+    return (math.abs(q1 - q2) + math.abs(r1 - r2) + math.abs(q1 + r1 - q2 - r2)) / 2.0
 end
 
 

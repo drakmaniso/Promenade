@@ -5,6 +5,7 @@ require "lib/hexgrid"
 require "code/globals"
 
 require "code/garden"
+require "code/Walker"
 
 require "code/inGame"
 
@@ -19,7 +20,9 @@ local translationX, translationY, scale
 
 
 function love.load(arg)
-    if arg[#arg] == "-debug" then require("mobdebug").start() end    
+    if arg[#arg] == "-debug" then require("mobdebug").start() end   
+    
+    math.randomseed(os.time())
     
     garden:initialize()
     
@@ -38,7 +41,7 @@ end
 function love.resize(width, height)
     translationX = width / 2
     translationY = height / 2
-    viewHeight = (gridSize - 0.25) * (math.sqrt(3.0) * 0.5)
+    viewHeight = (gridRadius + 0.75) * (math.sqrt(3.0) * 0.5)
     scale = height / (2.0*viewHeight)
     viewWidth = (width / scale) / 2.0
 end
@@ -54,6 +57,18 @@ function love.keypressed(key)
         love.event.push("quit")
     end
     state:keypressed(key)
+end
+
+
+---------------------------------------------------------------------------------------------------
+
+
+function love.mousepressed(x, y, button)  
+    x = x - translationX
+    y = y - translationY
+    x = x / scale
+    y = y / scale
+    state:mousepressed(x, y, button)
 end
 
 
