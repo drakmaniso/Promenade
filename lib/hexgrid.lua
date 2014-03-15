@@ -8,6 +8,12 @@ FlatHexGrid = {} -- aka Vertical Hexagonal Grid
 ---------------------------------------------------------------------------------------------------
 
 
+local pi = math.pi
+
+
+---------------------------------------------------------------------------------------------------
+
+
 local sqrt3 = math.sqrt(3.0)
 
 
@@ -123,7 +129,7 @@ function PointyHexGrid:pixelToCorner(x, y)
     local ox, oy = self:cellToPixel(q, r)
     local dx, dy = x-ox, y-oy
     local angle = math.atan2(dy, dx)
-    local corner = math.floor(2.0 + angle/(math.pi/3.0)) % 6 + 1
+    local corner = math.floor(2.0 + angle/(pi/3.0)) % 6 + 1
     return q, r, corner
 end
 
@@ -133,6 +139,83 @@ end
 
 function PointyHexGrid:distance(q1, r1, q2, r2)
     return (math.abs(q1 - q2) + math.abs(r1 - r2) + math.abs(q1 + r1 - q2 - r2)) / 2.0
+end
+
+
+---------------------------------------------------------------------------------------------------
+
+
+function PointyHexGrid:neighborCorner(q, r, corner, angle)
+    
+    if corner == 1 then
+        
+        angle = (angle - pi/6.0) % (2.0*pi)
+        if angle < 2.0*pi/3.0 then
+            return q+1, r-1, 6
+        elseif angle < 4.0*pi/3.0 then
+            return q, r, 2
+        else
+            return q, r, 6
+        end
+        
+    elseif corner == 2 then
+        
+        angle = (angle + pi/6.0) % (2.0*pi)
+        if angle < 2.0*pi/3.0 then
+            return q, r, 1
+        elseif angle < 4.0*pi/3.0 then
+            return q+1, r, 1
+        else
+            return q, r, 3
+        end
+    
+    elseif corner == 3 then
+        
+        angle = (angle - pi/6.0) % (2.0*pi)
+        if angle < 2.0*pi/3.0 then
+            return q, r, 2
+        elseif angle < 4.0*pi/3.0 then
+            return q+1, r, 4
+        else
+            return q, r, 4
+        end
+        
+    elseif corner == 4 then
+        
+        angle = (angle + pi/6.0) % (2.0*pi)
+        if angle < 2.0*pi/3.0 then
+            return q, r, 5
+        elseif angle < 4.0*pi/3.0 then
+            return q, r, 3
+        else
+            return q, r+1, 5
+        end
+    
+    elseif corner == 5 then
+        
+        angle = (angle - pi/6.0) % (2.0*pi)
+        if angle < 2.0*pi/3.0 then
+            return q, r, 6
+        elseif angle < 4.0*pi/3.0 then
+            return q, r, 4
+        else
+            return q-1, r, 4
+        end
+        
+    elseif corner == 6 then
+        
+        angle = (angle + pi/6.0) % (2.0*pi)
+        if angle < 2.0*pi/3.0 then
+            return q, r-1, 5
+        elseif angle < 4.0*pi/3.0 then
+            return q, r, 1
+        else
+            return q, r, 5
+        end
+        
+    else
+        return false, false, false
+    end
 end
 
 

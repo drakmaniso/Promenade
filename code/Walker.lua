@@ -7,7 +7,7 @@ Walker = {}
 Walker.new = instantiate
     
 function Walker:reset()
-    self.state = "rest"
+    self.state = "alert"
     
     local side = math.random(1, 6)
     if     side == 1 then self.q = gridRadius/2; self.r = -gridRadius
@@ -26,12 +26,14 @@ end
 function Walker:mousepressed(x, y, button)
     if self.state == "hovered" then
         self.state = "selected"
+        garden.state = "inert"
     elseif self.state == "selected" then
         if self.destinationQ then
             self.q, self.r = self.destinationQ, self.destinationR
             self.destinationQ, self.destinationR = nil, nil
         end
-        self.state = "rest"
+        self.state = "alert"
+        garden.state = "alert"
     end
 end
 
@@ -42,16 +44,22 @@ end
 function Walker:update(dt, x, y)
     if self.state == "selected" then
         self.destinationQ, self.destinationR = nil
-        if garden.mouseQ and grid:distance(garden.mouseQ, garden.mouseR, self.q, self.r) == 1 then
-            self.destinationQ, self.destinationR = garden.mouseQ, garden.mouseR
+        local mouseQ, mouseR = grid:pixelToCell(x, y)
+        if 
+            grid:distance(self.q, self.r, mouseQ, mouseR) == 1 
+            and grid:distance(0, 0, mouseQ, mouseR) <= gridRadius
+        then
+            self.destinationQ, self.destinationR = mouseQ, mouseR
         end
-    else
+    elseif garden.state == "alert" or garden.state == "inert" then
         local wx, wy = grid:cellToPixel(self.q, self.r)
         local dx, dy = wx-x, wy-y
         if dx*dx + dy*dy < 0.25*0.25 then
             self.state = "hovered"
+            garden.state = "inert"
         else
-            self.state = "rest"
+            self.state = "alert"
+            garden.state = "alert"
         end
    end
 end

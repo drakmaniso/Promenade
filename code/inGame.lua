@@ -27,6 +27,7 @@ end
 
 
 function inGame:mousepressed(x, y, button)
+    garden:mousepressed(x, y, button)
     walkers[1]:mousepressed(x, y, button)
 end
 
