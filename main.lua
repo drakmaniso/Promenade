@@ -5,6 +5,7 @@ require "lib/HexGrid"
 
 require "code/globals"
 
+require "code/beds"
 require "code/garden"
 require "code/Walker"
 require "code/Flower"

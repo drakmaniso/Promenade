@@ -93,9 +93,7 @@ function garden:update(dt, x, y)
     local distanceToCenter = grid:distance(0, 0, q, r)
     if 
         d2 < 0.15*0.15
-        and distanceToCenter < gardenRadius
-        and not (distanceToCenter >= gardenRadius-1 and r <=0 and corner == 1)
-        and not (distanceToCenter >= gardenRadius-1 and r >=0 and corner == 4)
+        and beds:isAvalaible(q, r, corner)
     then
         self.mouseQ, self.mouseR, self.mouseCorner = q, r, corner
     end
