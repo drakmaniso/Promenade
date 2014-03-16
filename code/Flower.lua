@@ -6,6 +6,16 @@ Flower = Prototype:clone()
 
 function Flower:make(q, r, corner)
     self.q, self.r, self.corner = q, r, corner
+    beds:remove(q, r, corner)
+    if corner == 1 then
+        beds:remove(q, r-1, 2)
+        beds:remove(q, r, 2)
+        beds:remove(q, r, 6)
+    elseif corner == 4 then
+        beds:remove(q, r, 3)
+        beds:remove(q, r+1, 5)
+        beds:remove(q, r, 5)
+    end
 end
 
 

@@ -22,7 +22,19 @@ end
 
 
 function beds:isAvalaible(q, r, corner)
+    q, r, corner = grid:normalizeCorner(q, r, corner)
     return self.set[gridRadius+q] and self.set[gridRadius+q][gridRadius+r] and self.set[gridRadius+q][gridRadius+r][corner]
+end
+
+
+---------------------------------------------------------------------------------------------------
+
+
+function beds:remove(q, r, corner)
+    q, r, corner = grid:normalizeCorner(q, r, corner)
+    if self.set[gridRadius+q] and self.set[gridRadius+q][gridRadius+r] then
+        self.set[gridRadius+q][gridRadius+r][corner] = false
+    end
 end
 
 
