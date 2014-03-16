@@ -117,7 +117,7 @@ function garden:drawCell(q, r)
 --    end
 --    love.graphics.setColor(HSL(120.0, 0.35, l))
 --    love.graphics.arc("fill", x, y, cellSide * 1.0, -math.pi/2, 2.9999*math.pi/2, 6)
-    love.graphics.circle("fill", x, y, cellSide * 0.75, 32)
+    love.graphics.circle("fill", x, y, cellRadius*0.15, 32)
 end
 
 
@@ -126,7 +126,36 @@ function garden:draw()
     --love.graphics.setColor(HSL(120.0, 0.35, 0.35))
     --love.graphics.circle("fill", 0.0, 0.0, gardenRadius, 128)
     
+    local width = cellRadius*0.50
+    
     love.graphics.setColor(HSL(120.0, 0.35, 0.40))
+    love.graphics.setLineWidth(width)
+    local x1, y1, x2, y2
+    for i = 0, gridRadius do
+        x1, y1 = grid:cellToPixel(-gridRadius, i)
+        x2, y2 = grid:cellToPixel(i, -gridRadius)
+        love.graphics.circle("fill", x1, y1, width*0.5)
+        love.graphics.line(x1, y1, x2, y2)
+        x2, y2 = grid:cellToPixel(gridRadius-i, i)
+        love.graphics.circle("fill", x2, y2, width*0.5)
+        love.graphics.line(x1, y1, x2, y2)
+        x1, y1 = grid:cellToPixel(-i, i-gridRadius)
+        x2, y2 = grid:cellToPixel(gridRadius, i-gridRadius)
+        love.graphics.circle("fill", x1, y1, width*0.5)
+        love.graphics.line(x1, y1, x2, y2)
+        x2, y2 = grid:cellToPixel(-i, gridRadius)
+        love.graphics.line(x1, y1, x2, y2)
+        x1, y1 = grid:cellToPixel(i, -gridRadius)
+        x2, y2 = grid:cellToPixel(i, gridRadius-i)
+        love.graphics.circle("fill", x1, y1, width*0.5)
+        love.graphics.line(x1, y1, x2, y2)
+        x1, y1 = grid:cellToPixel(i-gridRadius, gridRadius)
+        x2, y2 = grid:cellToPixel(gridRadius, i-gridRadius)
+        love.graphics.circle("fill", x1, y1, width*0.5)
+        love.graphics.line(x1, y1, x2, y2)
+    end
+    
+    love.graphics.setColor(HSL(120.0, 0.35, 0.45))
     self:drawCell(0, 0)
     for radius = 1, gridRadius do
         for i = 0, radius-1 do
