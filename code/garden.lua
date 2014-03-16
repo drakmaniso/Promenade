@@ -68,7 +68,6 @@ local mesh = love.graphics.newMesh(vertices, nil, "fan")
 
 function garden:initialize()
     self.mouseQ, self.mouseR, self.mouseCorner = {0, 0, 1}
-    self.state = "alert"
 end
 
 
@@ -76,13 +75,7 @@ end
 
 
 function garden:mousepressed(x, y, button)
-    if self.state == "alert" then
-        if self.mouseQ then
-            self.state = "selected"
-            self.originQ, self.originR, self.originCorner = self.mouseQ, self.mouseR, self.mouseCorner
-        end
-    else
-        self.state = "alert"
+    if self.mouseQ then
     end
 end
 
@@ -91,28 +84,19 @@ end
 
 
 function garden:update(dt, x, y)
-    if self.state == "alert" then
-        self.mouseQ, self.mouseR, self.mouseCorner = false, false, false
-        local q, r, corner = grid:normalizeCorner(grid:pixelToCorner(x, y))
-        local ox, oy = grid:cellToPixel(q, r)
-        local dx, dy = ox-x, oy-y
-        local d2 = dx*dx + dy*dy
-        local distanceToCenter = grid:distance(0, 0, q, r)
-        if distanceToCenter < gardenRadius then
-            self.mouseQ, self.mouseR, self.mouseCorner = q, r, corner
-        end
-    elseif self.state == "selected" or self.state == "directed" then
-        local ox, oy = grid:cornerToPixel(self.originQ, self.originR, self.originCorner)
-        local dx, dy = ox-x, oy-y
-        local d2 = dx*dx + dy*dy
-        if 0.1*cellRadius < d2 and d2 < 3.0*cellRadius then
-            self.state = "directed"
-            local angle = math.atan2(dy, dx)
-            self.middleQ, self.middleR, self.middleCorner = grid:neighborCorner(self.originQ, self.originR, self.originCorner, angle)
-            self.destinationQ, self.destinationR, self.destinationCorner = grid:neighborCorner(self.middleQ, self.middleR, self.middleCorner, angle)
-        else
-            self.state = "selected"
-        end
+    self.mouseQ, self.mouseR, self.mouseCorner = false, false, false
+    local q, r, corner = grid:normalizeCorner(grid:pixelToCorner(x, y))
+    local ox, oy = grid:cornerToPixel(q, r, corner)
+    local dx, dy = ox-x, oy-y
+    local d2 = dx*dx + dy*dy
+    local distanceToCenter = grid:distance(0, 0, q, r)
+    if 
+        d2 < 0.15*0.15
+        and distanceToCenter < gardenRadius
+        and not (distanceToCenter >= gardenRadius-1 and r <=0 and corner == 1)
+        and not (distanceToCenter >= gardenRadius-1 and r >=0 and corner == 4)
+    then
+        self.mouseQ, self.mouseR, self.mouseCorner = q, r, corner
     end
 end
 
@@ -136,9 +120,26 @@ function garden:drawCell(q, r)
 end
 
 
-function garden:drawCorner(q, r, c)
-    local x, y = grid:cornerToPixel(q, r, c)
-    love.graphics.circle("fill", x, y, cellSide * 0.20, 32)
+function garden:drawCorner(q, r, corner)
+    local x, y = grid:cornerToPixel(q, r, corner)
+    local x1, y1, x2, y2, x3, y3
+    if corner == 1 then
+        x1, y1 = grid:cornerToPixel(q, r-1, 2)
+        x2, y2 = grid:cornerToPixel(q, r, 2)
+        x3, y3 = grid:cornerToPixel(q, r, 6)
+    elseif corner == 4 then
+        x1, y1 = grid:cornerToPixel(q, r, 3)
+        x2, y2 = grid:cornerToPixel(q, r+1, 5)
+        x3, y3 = grid:cornerToPixel(q, r, 5)
+    end
+    local width = 0.05
+    love.graphics.setLineWidth(width)
+    love.graphics.circle("fill", x1, y1, cellSide * width, 32)
+    love.graphics.line(x, y, x1, y1)
+    love.graphics.circle("fill", x2, y2, cellSide * width, 32)
+    love.graphics.line(x, y, x2, y2)
+    love.graphics.circle("fill", x3, y3, cellSide * width, 32)
+    love.graphics.line(x, y, x3, y3)
 end
 
 
@@ -160,22 +161,9 @@ function garden:draw()
         end
     end
     
-    if self.state == "alert" and self.mouseQ then
-        love.graphics.setColor(HSL(120.0, 0.35, 0.30))
+    if self.mouseQ then
+        love.graphics.setColor(HSL(120.0, 0.35, 0.25))
         self:drawCorner(self.mouseQ, self.mouseR, self.mouseCorner)
-    elseif self.state == "selected" then
-        love.graphics.setColor(HSL(120.0, 0.35, 0.20))
-        self:drawCorner(self.originQ, self.originR, self.originCorner)
-    elseif self.state == "directed" then
-        love.graphics.setColor(HSL(120.0, 0.35, 0.20))
-        local x1, y1 = grid:cornerToPixel(self.originQ, self.originR, self.originCorner)
-        local x2, y2 = grid:cornerToPixel(self.middleQ, self.middleR, self.middleCorner)
-        local x3, y3 = grid:cornerToPixel(self.destinationQ, self.destinationR, self.destinationCorner)
-        love.graphics.setLineWidth(0.2)
-        love.graphics.setLineJoin("miter")
-        love.graphics.line(x1, y1, x2, y2, x3, y3)
-        self:drawCorner(self.originQ, self.originR, self.originCorner)
-        self:drawCorner(self.destinationQ, self.destinationR, self.destinationCorner)
     end
 end
 
