@@ -1,7 +1,7 @@
 require "ext/lib/strict"
 require "lib/Prototype"
 require "lib/hsl"
-require "lib/hexgrid"
+require "lib/HexGrid"
 
 require "code/globals"
 
