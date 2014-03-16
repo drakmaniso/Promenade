@@ -1,4 +1,5 @@
 require "ext/lib/strict"
+require "lib/Prototype"
 require "lib/hsl"
 require "lib/hexgrid"
 

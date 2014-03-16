@@ -1,8 +1,8 @@
-require "lib/instantiate"
+require "lib/Prototype"
 
-PointyHexGrid = {} -- aka Horizontal Hexagonal Grid
+PointyHexGrid = Prototype:clone() -- aka Horizontal Hexagonal Grid
 
-FlatHexGrid = {} -- aka Vertical Hexagonal Grid
+FlatHexGrid = Prototype:clone() -- aka Vertical Hexagonal Grid
 
 
 ---------------------------------------------------------------------------------------------------
@@ -20,18 +20,14 @@ local sqrt3 = math.sqrt(3.0)
 ---------------------------------------------------------------------------------------------------
 
 
-PointyHexGrid.new = instantiate
-
-function PointyHexGrid:reset(radius)
+function PointyHexGrid:make(radius)
     self.radius = radius
     self.width = sqrt3 * radius
     self.height = 2.0 * radius
 end
 
 
-FlatHexGrid.new = instantiate
-
-function FlatHexGrid:reset(radius)
+function FlatHexGrid:make(radius)
     self.radius = radius
 end
 
@@ -131,6 +127,19 @@ function PointyHexGrid:pixelToCorner(x, y)
     local angle = math.atan2(dy, dx)
     local corner = math.floor(2.0 + angle/(pi/3.0)) % 6 + 1
     return q, r, corner
+end
+
+
+---------------------------------------------------------------------------------------------------
+
+
+function PointyHexGrid:normalizeCorner(q, r, corner)
+    if     corner == 2 then return q+1, r-1, 4
+    elseif corner == 3 then return q, r+1, 1
+    elseif corner == 5 then return q-1, r+1, 1
+    elseif corner == 6 then return q, r-1, 4
+    else                    return q, r, corner
+    end
 end
 
 

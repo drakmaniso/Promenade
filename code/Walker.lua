@@ -1,12 +1,10 @@
-Walker = {}
+Walker = Prototype:clone()
 
 
 ---------------------------------------------------------------------------------------------------
-
-
-Walker.new = instantiate
     
-function Walker:reset()
+    
+function Walker:make()
     self.state = "alert"
     
     local side = math.random(1, 6)

@@ -1,11 +1,14 @@
+Prototype = {}
+
+
 ---------------------------------------------------------------------------------------------------
 
 
-function instantiate(self, ...)
+function Prototype:clone(...)
     local object = {}
     setmetatable(object, self)
     self.__index = self
-    object:reset(...)
+    if object.make then object:make(...) end
     return object
 end
 

@@ -1,11 +1,11 @@
-inGame = {}
+inGame = Prototype:clone()
 
 
 ---------------------------------------------------------------------------------------------------
 
 
 function inGame:enter()
-    walkers[1] = Walker:new()
+    walkers[1] = Walker:clone()
 end
 
 

@@ -8,7 +8,7 @@ viewHeight = nil
 
 cellRadius = 0.5
 gridRadius = 4
-grid = PointyHexGrid:new(cellRadius)
+grid = PointyHexGrid:clone(cellRadius)
 
 walkers = {}
 

@@ -1,4 +1,4 @@
-garden = {}
+garden = Prototype:clone()
 
 
 ---------------------------------------------------------------------------------------------------
@@ -93,7 +93,7 @@ end
 function garden:update(dt, x, y)
     if self.state == "alert" then
         self.mouseQ, self.mouseR, self.mouseCorner = false, false, false
-        local q, r, corner = grid:pixelToCorner(x, y)
+        local q, r, corner = grid:normalizeCorner(grid:pixelToCorner(x, y))
         local ox, oy = grid:cellToPixel(q, r)
         local dx, dy = ox-x, oy-y
         local d2 = dx*dx + dy*dy
