@@ -1,3 +1,6 @@
+---------------------------------------------------------------------------------------------------
+
+
 function love.conf(t)
     t.identity = "Promenade"
     t.version = "0.9.0"
@@ -18,3 +21,7 @@ function love.conf(t)
     t.modules.joystick = false
     t.modules.physics = false
 end
+
+
+---------------------------------------------------------------------------------------------------
+-- Copyright (c) 2014 - Laurent Moussault <moussault.laurent@gmail.com>
