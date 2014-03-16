@@ -47,6 +47,9 @@ end
 function inGame:draw()
     garden:draw()
     walkers[1]:draw()
+    for _,flower in ipairs(flowers) do
+        flower:draw()
+    end
 end
 
 

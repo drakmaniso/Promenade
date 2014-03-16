@@ -76,6 +76,7 @@ end
 
 function garden:mousepressed(x, y, button)
     if self.mouseQ then
+        flowers[#flowers+1] = Flower:clone(self.mouseQ, self.mouseR, self.mouseCorner)
     end
 end
 
@@ -120,29 +121,6 @@ function garden:drawCell(q, r)
 end
 
 
-function garden:drawCorner(q, r, corner)
-    local x, y = grid:cornerToPixel(q, r, corner)
-    local x1, y1, x2, y2, x3, y3
-    if corner == 1 then
-        x1, y1 = grid:cornerToPixel(q, r-1, 2)
-        x2, y2 = grid:cornerToPixel(q, r, 2)
-        x3, y3 = grid:cornerToPixel(q, r, 6)
-    elseif corner == 4 then
-        x1, y1 = grid:cornerToPixel(q, r, 3)
-        x2, y2 = grid:cornerToPixel(q, r+1, 5)
-        x3, y3 = grid:cornerToPixel(q, r, 5)
-    end
-    local width = 0.05
-    love.graphics.setLineWidth(width)
-    love.graphics.circle("fill", x1, y1, cellSide * width, 32)
-    love.graphics.line(x, y, x1, y1)
-    love.graphics.circle("fill", x2, y2, cellSide * width, 32)
-    love.graphics.line(x, y, x2, y2)
-    love.graphics.circle("fill", x3, y3, cellSide * width, 32)
-    love.graphics.line(x, y, x3, y3)
-end
-
-
 function garden:draw()
     love.graphics.draw(mesh, 0.0, 0.0)
     --love.graphics.setColor(HSL(120.0, 0.35, 0.35))
@@ -163,7 +141,7 @@ function garden:draw()
     
     if self.mouseQ then
         love.graphics.setColor(HSL(120.0, 0.35, 0.25))
-        self:drawCorner(self.mouseQ, self.mouseR, self.mouseCorner)
+        Flower:drawAt(self.mouseQ, self.mouseR, self.mouseCorner, 0.05)
     end
 end
 

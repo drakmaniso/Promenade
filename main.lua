@@ -7,6 +7,7 @@ require "code/globals"
 
 require "code/garden"
 require "code/Walker"
+require "code/Flower"
 
 require "code/inGame"
 
