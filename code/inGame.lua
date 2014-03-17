@@ -6,6 +6,7 @@ inGame = Prototype:clone()
 
 function inGame:enter()
     beds:make()
+    moves:make()
     walkers[1] = Walker:clone()
 end
 

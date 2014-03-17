@@ -36,8 +36,7 @@ function Walker:update(dt, x, y)
     local ox, oy = grid:cellToPixel(mouseQ, mouseR)
     local dx, dy = ox-x, oy-y
     if 
-        grid:distance(self.q, self.r, mouseQ, mouseR) == 1 
-        and grid:distance(0, 0, mouseQ, mouseR) <= gridRadius
+        moves:contain(self.q, self.r, mouseQ, mouseR)
         and dx*dx + dy*dy < 0.25*0.25
     then
         self.destinationQ, self.destinationR = mouseQ, mouseR
