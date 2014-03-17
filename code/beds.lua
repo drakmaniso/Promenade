@@ -6,7 +6,7 @@ beds = Prototype:clone()
 
 
 local function toIndex(q, r, corner)
-    return (q+gridRadius)*(2*gridRadius+1)*6 + (r+gridRadius)*6 + corner
+    return (q+gridRadius)*(2*gridRadius+2)*6 + (r+gridRadius)*6 + corner
 end
 
 
