@@ -4,15 +4,28 @@ beds = Prototype:clone()
 ---------------------------------------------------------------------------------------------------
 
 
+
+local function toIndex(q, r, corner)
+    return (q+gridRadius)*(2*gridRadius+1)*6 + (r+gridRadius)*6 + corner
+end
+
+
+---------------------------------------------------------------------------------------------------
+
+
 function beds:make()
     self.set = {}
     for q = -gridRadius, gridRadius do
-        self.set[gridRadius+q] = {}
         for r = -gridRadius, gridRadius do
             local distanceToCenter = grid:distance(0, 0, q, r)
-            self.set[gridRadius+q][gridRadius+r] = {}
-            self.set[gridRadius+q][gridRadius+r][1] = distanceToCenter <= gridRadius and not (distanceToCenter > gridRadius-1 and r <=0)
-            self.set[gridRadius+q][gridRadius+r][4] = distanceToCenter <= gridRadius and not (distanceToCenter > gridRadius-1 and r >=0)
+            if distanceToCenter <= gridRadius then
+                if not (distanceToCenter > gridRadius-1 and r <=0) then
+                    self.set[toIndex(q, r, 1)] = true
+                end
+                if not (distanceToCenter > gridRadius-1 and r >=0) then
+                    self.set[toIndex(q, r, 4)] = true
+                end
+            end
         end
     end
 end
@@ -21,9 +34,9 @@ end
 ---------------------------------------------------------------------------------------------------
 
 
-function beds:isAvalaible(q, r, corner)
+function beds:contain(q, r, corner)
     q, r, corner = grid:normalizeCorner(q, r, corner)
-    return self.set[gridRadius+q] and self.set[gridRadius+q][gridRadius+r] and self.set[gridRadius+q][gridRadius+r][corner]
+    return self.set[toIndex(q, r, corner)]
 end
 
 
@@ -32,9 +45,7 @@ end
 
 function beds:remove(q, r, corner)
     q, r, corner = grid:normalizeCorner(q, r, corner)
-    if self.set[gridRadius+q] and self.set[gridRadius+q][gridRadius+r] then
-        self.set[gridRadius+q][gridRadius+r][corner] = false
-    end
+    self.set[toIndex(q, r, corner)] = nil
 end
 
 
