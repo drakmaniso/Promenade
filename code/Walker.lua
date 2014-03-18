@@ -52,12 +52,12 @@ function Walker:draw()
     
     if self.destinationQ then
         local x2, y2 = grid:cellToPixel(self.destinationQ, self.destinationR)
-        love.graphics.setColor(HSL(120.0, 0.25, 0.75))
+        love.graphics.setColor(HSL(100.0, 0.25, 0.75))
         love.graphics.setLineWidth(0.05)
         love.graphics.line(x, y, x2, y2)
     end
     
-    love.graphics.setColor(HSL(270, 0.50, 0.30))
+    love.graphics.setColor(HSL(270, 0.30, 0.30))
     love.graphics.circle("fill", x, y, 0.25, 32)
 end
 

@@ -14,7 +14,7 @@ local gardenRadius = (gridRadius + 0.75) * math.sqrt(3) * cellSide
 local gardenHeight = math.sqrt(3.0) * gardenRadius
 local gardenWidth = gardenRadius * 2.0
 
-local color = {HSL(120.0, 0.35, 0.35)}
+local color = {HSL(100.0, 0.25, 0.35)}
 
 local vertices = 
 {
@@ -153,7 +153,7 @@ function garden:draw()
 --        love.graphics.line(x1, y1, x2, y2)
 --    end
     
-    love.graphics.setColor(HSL(120.0, 0.35, 0.40))
+    love.graphics.setColor(HSL(100.0, 0.25, 0.38))
     self:drawCell(0, 0)
     for radius = 1, gridRadius do
         for i = 0, radius-1 do
@@ -167,7 +167,7 @@ function garden:draw()
     end
     
     if self.mouseQ then
-        love.graphics.setColor(HSL(120.0, 0.35, 0.25))
+        love.graphics.setColor(HSL(100.0, 0.25, 0.27))
         Flower:drawAt(self.mouseQ, self.mouseR, self.mouseCorner, 0.05)
     end
 end

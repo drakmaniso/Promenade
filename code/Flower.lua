@@ -54,7 +54,7 @@ end
 
 
 function Flower:draw()
-    love.graphics.setColor(HSL(120.0, 0.35, 0.20))
+    love.graphics.setColor(HSL(100.0, 0.25, 0.22))
     self:drawAt(self.q, self.r, self.corner, 0.20)
 end
 
