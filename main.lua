@@ -30,7 +30,7 @@ function love.load(arg)
     
     garden:initialize()
     
-    love.graphics.setBackgroundColor(222, 222, 222)
+    love.graphics.setBackgroundColor(HSL(40, 0.10, 0.85))
     
     love.resize(love.window.getWidth(), love.window.getHeight())
     
