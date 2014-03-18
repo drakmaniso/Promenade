@@ -11,10 +11,16 @@ function Flower:make(q, r, corner)
         beds:remove(q, r-1, 2)
         beds:remove(q, r, 2)
         beds:remove(q, r, 6)
+        moves:remove(q, r, q, r-1)
+        moves:remove(q, r, q+1, r-1)
+        moves:remove(q, r-1, q+1, r-1)
     elseif corner == 4 then
         beds:remove(q, r, 3)
         beds:remove(q, r+1, 5)
         beds:remove(q, r, 5)
+        moves:remove(q, r, q, r+1)
+        moves:remove(q, r, q-1, r+1)
+        moves:remove(q, r+1, q-1, r+1)
     end
 end
 

@@ -57,4 +57,24 @@ end
 
 
 ---------------------------------------------------------------------------------------------------
+
+
+function moves:remove(originQ, originR, destinationQ, destinationR)
+    local origin = self.set[toIndex(originQ, originR)]
+    for i,v in ipairs(origin) do
+        if v[1] == destinationQ and v[2] == destinationR then
+            table.remove(origin, i)
+        end
+    end
+    local destination = self.set[toIndex(destinationQ, destinationR)]
+    for i,v in ipairs(destination) do
+        if v[1] == originQ and v[2] == originR then
+            table.remove(destination, i)
+        end
+    end
+end
+
+
+
+---------------------------------------------------------------------------------------------------
 -- Copyright (c) 2014 - Laurent Moussault <moussault.laurent@gmail.com>
